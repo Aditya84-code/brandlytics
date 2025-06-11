@@ -30,43 +30,70 @@ import BrandScoreRadarChart from '@/components/dashboard/BrandScoreRadarChart';
 import RecommendationList from '@/components/dashboard/RecommendationList';
 import QuadrantCard from '@/components/dashboard/QuadrantCard';
 import AICoachConsultation from '@/components/dashboard/AICoachConsultation';
+import { useAuth } from '@/contexts/AuthContext';
+import { getBrandResult } from '@/lib/database';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [userData, setUserData] = useState<{ formData: FormData; webhookResponse: WebhookResponse } | null>(null);
+  const { user, loading: authLoading } = useAuth();
+  const [userData, setUserData] = useState<{ formData: FormData; webhookResponse: WebhookResponse; auditId?: string } | null>(null);
   const [brandReport, setBrandReport] = useState<BrandReport | null>(null);
   const [selectedTab, setSelectedTab] = useState('overview');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedData = localStorage.getItem('brandlytics-audit-data');
-    
-    if (!storedData) {
-      navigate('/audit');
+    if (!authLoading && !user) {
+      navigate('/signin');
       return;
     }
-    
-    try {
-      const parsedData = JSON.parse(storedData);
-      setUserData(parsedData);
-      
-      // Add validation to ensure we have valid score data
-      if (parsedData.webhookResponse && parsedData.webhookResponse.scores && 
-          typeof parsedData.webhookResponse.scores.overall !== 'undefined') {
-        setBrandReport({
-          score: parsedData.webhookResponse.scores,
-          recommendations: parsedData.webhookResponse.recommendations || []
-        });
-      } else {
-        console.error('Invalid or missing score data');
-        navigate('/audit');
-      }
-    } catch (error) {
-      console.error('Error parsing stored data:', error);
-      navigate('/audit');
-    }
-  }, [navigate]);
 
-  if (!userData || !brandReport || !brandReport.score) {
+    if (user) {
+      loadDashboardData();
+    }
+  }, [user, authLoading, navigate]);
+
+  const loadDashboardData = async () => {
+    try {
+      setLoading(true);
+      
+      // First, try to get data from localStorage (for immediate access after audit)
+      const storedData = localStorage.getItem('brandlytics-audit-data');
+      
+      if (storedData) {
+        try {
+          const parsedData = JSON.parse(storedData);
+          
+          // Validate the stored data
+          if (parsedData.webhookResponse && parsedData.webhookResponse.scores && 
+              typeof parsedData.webhookResponse.scores.overall !== 'undefined') {
+            setUserData(parsedData);
+            setBrandReport({
+              score: parsedData.webhookResponse.scores,
+              recommendations: parsedData.webhookResponse.recommendations || []
+            });
+            setLoading(false);
+            return;
+          }
+        } catch (error) {
+          console.error('Error parsing localStorage data:', error);
+          localStorage.removeItem('brandlytics-audit-data');
+        }
+      }
+
+      // If no valid localStorage data, try to load from database
+      // For now, we'll redirect to audit form if no data is found
+      // In a real implementation, you might want to load the most recent audit result
+      navigate('/audit');
+      
+    } catch (error) {
+      console.error('Error loading dashboard data:', error);
+      navigate('/audit');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (authLoading || loading) {
     return (
       <div className="flex h-[80vh] items-center justify-center">
         <div className="text-center">
@@ -79,6 +106,20 @@ const Dashboard = () => {
               transition={{ duration: 2 }}
             />
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!userData || !brandReport || !brandReport.score) {
+    return (
+      <div className="flex h-[80vh] items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold">No analysis data found</h2>
+          <p className="text-muted-foreground mt-2">Please complete a brand audit first.</p>
+          <Button onClick={() => navigate('/audit')} className="mt-4">
+            Start Brand Audit
+          </Button>
         </div>
       </div>
     );
@@ -117,11 +158,16 @@ const Dashboard = () => {
             <div className="flex items-center gap-3">
               <div className="text-5xl font-bold text-primary">{brandReport.score.overall}</div>
               <div className="rounded-lg bg-primary/10 px-2 py-1 text-sm text-primary">
-                Needs Improvement
+                {brandReport.score.overall >= 80 ? 'Excellent' : 
+                 brandReport.score.overall >= 60 ? 'Good' : 
+                 brandReport.score.overall >= 40 ? 'Fair' : 'Needs Improvement'}
               </div>
             </div>
             <p className="mt-2 text-sm text-muted-foreground">
-              Your brand needs significant improvement in visibility and competitive positioning.
+              {userData.webhookResponse.summary ? 
+                userData.webhookResponse.summary.substring(0, 150) + '...' :
+                'Your brand analysis has been completed successfully.'
+              }
             </p>
           </div>
           <div className="col-span-2 h-60">
@@ -159,7 +205,7 @@ const Dashboard = () => {
               score={brandReport.score.consistency}
               description="How consistent your brand appears across platforms"
               icon={BarChart}
-              review={userData.webhookResponse.reviews.consistency}
+              review={userData.webhookResponse.reviews?.consistency}
             />
             
             <QuadrantCard
@@ -167,7 +213,7 @@ const Dashboard = () => {
               score={brandReport.score.contentQuality}
               description="Analysis of your content engagement and value"
               icon={LineChart}
-              review={userData.webhookResponse.reviews.contentQuality}
+              review={userData.webhookResponse.reviews?.contentQuality}
             />
             
             <QuadrantCard
@@ -175,7 +221,7 @@ const Dashboard = () => {
               score={brandReport.score.visibility}
               description="Your brand's searchability and reach"
               icon={ArrowUpRight}
-              review={userData.webhookResponse.reviews.visibility}
+              review={userData.webhookResponse.reviews?.visibility}
             />
             
             <QuadrantCard
@@ -183,7 +229,7 @@ const Dashboard = () => {
               score={brandReport.score.competitive}
               description="How you compare to industry peers"
               icon={Users}
-              review={userData.webhookResponse.reviews.competitive}
+              review={userData.webhookResponse.reviews?.competitive}
             />
           </div>
         </TabsContent>
@@ -214,14 +260,14 @@ const Dashboard = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="prose prose-neutral dark:prose-invert max-w-none">
-              <div className="space-y-4" dangerouslySetInnerHTML={{ __html: userData.webhookResponse.summary }} />
+              <div className="space-y-4" dangerouslySetInnerHTML={{ __html: userData.webhookResponse.summary || 'No summary available.' }} />
             </CardContent>
           </Card>
         </TabsContent>
         
         <TabsContent value="ai-coach">
           <AICoachConsultation 
-            userSummary={userData.webhookResponse.summary}
+            userSummary={userData.webhookResponse.summary || 'Brand analysis completed successfully.'}
             userName={userData.formData.personalInfo.name}
           />
         </TabsContent>

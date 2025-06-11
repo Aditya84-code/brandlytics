@@ -128,7 +128,8 @@ const PastResults = () => {
           socialProfiles: audit.social_profiles,
           preferences: audit.preferences
         },
-        webhookResponse: audit.result.webhook_response
+        webhookResponse: audit.result.webhook_response,
+        auditId: audit.id
       };
       
       localStorage.setItem('brandlytics-audit-data', JSON.stringify(auditData));

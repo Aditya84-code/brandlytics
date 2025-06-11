@@ -16,6 +16,7 @@ import { useToast } from '@/hooks/use-toast';
 import { calculateOverallScore } from '@/utils/brandAnalysis';
 import { useAuth } from '@/contexts/AuthContext';
 import { Link } from 'react-router-dom';
+import { createBrandAudit, createBrandResult, updateBrandAuditStatus } from '@/lib/database';
 
 const WEBHOOK_URL = 'https://motivatrix7.app.n8n.cloud/webhook/226738f5-daa8-45fe-8e79-c6f8b08d654e';
 
@@ -110,17 +111,24 @@ const AuditForm = () => {
     }
 
     setIsSubmitting(true);
+    let auditId: string | null = null;
+
     try {
-      // Prepare webhook data
+      // Step 1: Create brand audit record in database
+      const brandAudit = await createBrandAudit(user.id, data);
+      auditId = brandAudit.id;
+
+      // Step 2: Prepare webhook data
       const webhookData = {
         fullName: data.personalInfo.name,
         email: data.personalInfo.email,
         instagramUrl: data.socialProfiles.instagram,
         linkedinUrl: data.socialProfiles.linkedin,
-        userId: user.id, // Include user ID for tracking
+        userId: user.id,
+        auditId: auditId,
       };
 
-      // Send data to webhook
+      // Step 3: Send data to webhook
       const response = await fetch(WEBHOOK_URL, {
         method: 'POST',
         headers: {
@@ -130,13 +138,13 @@ const AuditForm = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to submit data');
+        throw new Error('Failed to submit data to analysis service');
       }
 
-      // Wait for webhook response
+      // Step 4: Wait for webhook response
       const webhookResponse = await response.json();
       
-      // Ensure overall score exists
+      // Step 5: Ensure overall score exists
       if (webhookResponse.scores && !webhookResponse.scores.overall) {
         webhookResponse.scores.overall = calculateOverallScore({
           consistency: webhookResponse.scores.consistency,
@@ -145,27 +153,47 @@ const AuditForm = () => {
           competitive: webhookResponse.scores.competitive
         });
       }
+
+      // Step 6: Save results to database
+      await createBrandResult(auditId, user.id, webhookResponse);
+
+      // Step 7: Update audit status to completed
+      await updateBrandAuditStatus(auditId, 'completed');
       
-      // Store both form data and webhook response
+      // Step 8: Store data in localStorage for immediate dashboard access
       localStorage.setItem('brandlytics-audit-data', JSON.stringify({
         formData: data,
-        webhookResponse
+        webhookResponse,
+        auditId: auditId
       }));
       
       toast({
-        title: 'Audit request submitted!',
-        description: 'Redirecting to your brand analysis dashboard...',
+        title: 'Analysis Complete!',
+        description: 'Your brand audit has been completed successfully.',
       });
       
       setTimeout(() => {
         navigate('/dashboard');
       }, 1000);
-    } catch (error) {
+
+    } catch (error: any) {
+      console.error('Error during audit submission:', error);
+      
+      // Update audit status to failed if we have an audit ID
+      if (auditId) {
+        try {
+          await updateBrandAuditStatus(auditId, 'failed');
+        } catch (updateError) {
+          console.error('Error updating audit status to failed:', updateError);
+        }
+      }
+
       toast({
-        title: 'Error submitting audit',
-        description: 'Please try again later',
+        title: 'Analysis Failed',
+        description: error.message || 'There was an error processing your audit. Please try again.',
         variant: 'destructive',
       });
+    } finally {
       setIsSubmitting(false);
     }
   };
