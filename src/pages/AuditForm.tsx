@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
@@ -11,9 +11,11 @@ import PersonalInfoForm from '@/components/forms/PersonalInfoForm';
 import SocialProfilesForm from '@/components/forms/SocialProfilesForm';
 import PreferencesForm from '@/components/forms/PreferencesForm';
 import { FormData } from '@/types';
-import { ChevronLeft, ChevronRight, Brain, Zap, BarChart3, Search, Target, TrendingUp } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Brain, Zap, BarChart3, Search, Target, TrendingUp, Lock, User, ArrowRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { calculateOverallScore } from '@/utils/brandAnalysis';
+import { useAuth } from '@/contexts/AuthContext';
+import { Link } from 'react-router-dom';
 
 const WEBHOOK_URL = 'https://motivatrix7.app.n8n.cloud/webhook/226738f5-daa8-45fe-8e79-c6f8b08d654e';
 
@@ -22,6 +24,7 @@ const AuditForm = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user, loading } = useAuth();
   
   const formSchema = z.object({
     personalInfo: z.object({
@@ -58,6 +61,26 @@ const AuditForm = () => {
     },
   });
 
+  // Check authentication status
+  useEffect(() => {
+    if (!loading && !user) {
+      toast({
+        title: 'Authentication Required',
+        description: 'Please sign in to access the brand audit form.',
+        variant: 'destructive',
+      });
+    }
+  }, [user, loading, toast]);
+
+  // Pre-fill form with user data if available
+  useEffect(() => {
+    if (user) {
+      form.setValue('personalInfo.email', user.email || '');
+      // You can also pre-fill name from profile if available
+      // form.setValue('personalInfo.name', profile?.full_name || '');
+    }
+  }, [user, form]);
+
   const nextStep = async () => {
     if (step === 1) {
       const result = await form.trigger('personalInfo');
@@ -77,6 +100,15 @@ const AuditForm = () => {
   };
 
   const onSubmit = async (data: FormData) => {
+    if (!user) {
+      toast({
+        title: 'Authentication Required',
+        description: 'Please sign in to submit your audit.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       // Prepare webhook data
@@ -84,7 +116,8 @@ const AuditForm = () => {
         fullName: data.personalInfo.name,
         email: data.personalInfo.email,
         instagramUrl: data.socialProfiles.instagram,
-        linkedinUrl: data.socialProfiles.linkedin
+        linkedinUrl: data.socialProfiles.linkedin,
+        userId: user.id, // Include user ID for tracking
       };
 
       // Send data to webhook
@@ -291,6 +324,72 @@ const AuditForm = () => {
       </motion.div>
     );
   };
+
+  // Show loading state while checking authentication
+  if (loading) {
+    return (
+      <div className="flex h-[80vh] items-center justify-center">
+        <div className="text-center">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+          <p className="mt-4 text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show authentication required message if user is not logged in
+  if (!user) {
+    return (
+      <motion.div
+        className="container flex min-h-[calc(100vh-4rem)] items-center justify-center py-12"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+              <Lock className="h-8 w-8 text-primary" />
+            </div>
+            <CardTitle className="text-2xl">Authentication Required</CardTitle>
+            <CardDescription>
+              Please sign in to access the brand audit form and analyze your profile
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="rounded-lg bg-muted p-4">
+              <h4 className="font-medium mb-2">Why do I need to sign in?</h4>
+              <ul className="text-sm text-muted-foreground space-y-1">
+                <li>• Save your audit results for future reference</li>
+                <li>• Access personalized recommendations</li>
+                <li>• Track your brand improvement over time</li>
+                <li>• Schedule AI coach consultations</li>
+              </ul>
+            </div>
+            
+            <div className="flex flex-col gap-3">
+              <Button asChild className="w-full">
+                <Link to="/signin" className="gap-2">
+                  <User className="h-4 w-4" />
+                  Sign In
+                </Link>
+              </Button>
+              <Button asChild variant="outline" className="w-full">
+                <Link to="/signup" className="gap-2">
+                  Create Account
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+            
+            <p className="text-center text-sm text-muted-foreground">
+              Don't have an account? <Link to="/signup" className="text-primary hover:underline">Sign up for free</Link>
+            </p>
+          </CardContent>
+        </Card>
+      </motion.div>
+    );
+  }
 
   return (
     <>
