@@ -233,45 +233,54 @@ const Dashboard = () => {
       </div>
 
       <Tabs defaultValue="overview" onValueChange={setSelectedTab} className="w-full">
-        <TabsList className="mb-8 lg:mb-12 grid w-full grid-cols-5 h-auto p-1">
-          <TabsTrigger value="overview" className="text-sm py-3 px-2">
-            Overview
+        <TabsList className="mb-8 lg:mb-12 grid w-full grid-cols-5 h-auto p-1 gap-1">
+          <TabsTrigger value="overview" className="text-xs sm:text-sm py-2 px-1 sm:py-3 sm:px-2">
+            <span className="hidden sm:inline">Overview</span>
+            <span className="sm:hidden">Over</span>
           </TabsTrigger>
-          <TabsTrigger value="recommendations" className="text-sm py-3 px-2">
-            Recommendations
+          <TabsTrigger value="recommendations" className="text-xs sm:text-sm py-2 px-1 sm:py-3 sm:px-2">
+            <span className="hidden sm:inline">Recommendations</span>
+            <span className="sm:hidden">Rec</span>
           </TabsTrigger>
-          <TabsTrigger value="summary" className="text-sm py-3 px-2">
-            Summary
+          <TabsTrigger value="summary" className="text-xs sm:text-sm py-2 px-1 sm:py-3 sm:px-2">
+            <span className="hidden sm:inline">Summary</span>
+            <span className="sm:hidden">Sum</span>
           </TabsTrigger>
-          <TabsTrigger value="ai-coach" className="relative text-sm py-3 px-2">
-            <div className="flex items-center gap-1 lg:gap-2 flex-wrap justify-center">
-              <div className="relative">
-                <Sparkles className="h-3 w-3 lg:h-4 lg:w-4" />
-                <div className="absolute -top-1 -right-1 h-1.5 w-1.5 lg:h-2 lg:w-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 animate-pulse"></div>
+          <TabsTrigger value="ai-coach" className="relative text-xs sm:text-sm py-2 px-1 sm:py-3 sm:px-2">
+            <div className="flex items-center gap-1 flex-col sm:flex-row sm:gap-2 justify-center">
+              <div className="relative flex items-center gap-1">
+                <div className="relative">
+                  <Sparkles className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <div className="absolute -top-0.5 -right-0.5 h-1 w-1 sm:h-1.5 sm:w-1.5 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 animate-pulse"></div>
+                </div>
+                <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-semibold whitespace-nowrap">
+                  <span className="hidden sm:inline">AI Coach</span>
+                  <span className="sm:hidden">AI</span>
+                </span>
               </div>
-              <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-semibold whitespace-nowrap text-xs lg:text-sm">
-                AI Coach
-              </span>
-              <Badge className="bg-gradient-to-r from-purple-500 to-blue-500 text-white border-0 text-xs px-1 py-0.5 lg:px-1.5 lg:py-0.5">
-                <Crown className="h-2 w-2 lg:h-2.5 lg:w-2.5 mr-0.5 lg:mr-1" />
-                <span className="hidden sm:inline">PREMIUM</span>
-                <span className="sm:hidden">PRO</span>
+              <Badge className="bg-gradient-to-r from-purple-500 to-blue-500 text-white border-0 text-xs px-1 py-0 sm:px-1.5 sm:py-0.5 h-4 sm:h-auto">
+                <Crown className="h-2 w-2 mr-0.5" />
+                <span className="hidden sm:inline">PRO</span>
+                <span className="sm:hidden text-xs">P</span>
               </Badge>
             </div>
           </TabsTrigger>
-          <TabsTrigger value="chat-coach" className="relative text-sm py-3 px-2">
-            <div className="flex items-center gap-1 lg:gap-2 flex-wrap justify-center">
-              <div className="relative">
-                <Bot className="h-3 w-3 lg:h-4 lg:w-4" />
-                <div className="absolute -top-1 -right-1 h-1.5 w-1.5 lg:h-2 lg:w-2 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 animate-pulse"></div>
+          <TabsTrigger value="chat-coach" className="relative text-xs sm:text-sm py-2 px-1 sm:py-3 sm:px-2">
+            <div className="flex items-center gap-1 flex-col sm:flex-row sm:gap-2 justify-center">
+              <div className="relative flex items-center gap-1">
+                <div className="relative">
+                  <Bot className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <div className="absolute -top-0.5 -right-0.5 h-1 w-1 sm:h-1.5 sm:w-1.5 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 animate-pulse"></div>
+                </div>
+                <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent font-semibold whitespace-nowrap">
+                  <span className="hidden sm:inline">Chat Coach</span>
+                  <span className="sm:hidden">Chat</span>
+                </span>
               </div>
-              <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent font-semibold whitespace-nowrap text-xs lg:text-sm">
-                Chat Coach
-              </span>
-              <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 text-xs px-1 py-0.5 lg:px-1.5 lg:py-0.5">
-                <MessageCircle className="h-2 w-2 lg:h-2.5 lg:w-2.5 mr-0.5 lg:mr-1" />
-                <span className="hidden sm:inline">LIVE</span>
-                <span className="sm:hidden">ON</span>
+              <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 text-xs px-1 py-0 sm:px-1.5 sm:py-0.5 h-4 sm:h-auto">
+                <MessageCircle className="h-2 w-2 mr-0.5" />
+                <span className="hidden sm:inline">ON</span>
+                <span className="sm:hidden text-xs">•</span>
               </Badge>
             </div>
           </TabsTrigger>
