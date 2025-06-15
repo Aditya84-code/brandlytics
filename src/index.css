@@ -104,9 +104,76 @@
     width: 100%;
   }
 
+  /* Enhanced container with proper breathing space */
   .container {
-    @apply mx-auto max-w-5xl px-6 sm:px-8 lg:px-12;
-    width: 100%;
+    @apply mx-auto w-full;
+    /* Mobile: 16px padding */
+    padding-left: 1rem;
+    padding-right: 1rem;
+    /* Tablet: 24px padding */
+    @media (min-width: 640px) {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+    /* Desktop: 32px padding */
+    @media (min-width: 768px) {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+    /* Large desktop: 48px padding with max-width */
+    @media (min-width: 1024px) {
+      padding-left: 3rem;
+      padding-right: 3rem;
+      max-width: 1200px;
+    }
+    /* Extra large: 64px padding with larger max-width */
+    @media (min-width: 1280px) {
+      padding-left: 4rem;
+      padding-right: 4rem;
+      max-width: 1400px;
+    }
+    /* Ultra wide: 80px padding */
+    @media (min-width: 1536px) {
+      padding-left: 5rem;
+      padding-right: 5rem;
+      max-width: 1600px;
+    }
+  }
+
+  /* Special container for dashboard with extra breathing room */
+  .dashboard-container {
+    @apply mx-auto w-full;
+    /* Mobile: 16px padding */
+    padding-left: 1rem;
+    padding-right: 1rem;
+    /* Tablet: 24px padding */
+    @media (min-width: 640px) {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+    /* Desktop: 40px padding */
+    @media (min-width: 768px) {
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
+    }
+    /* Large desktop: 60px padding with max-width */
+    @media (min-width: 1024px) {
+      padding-left: 3.75rem;
+      padding-right: 3.75rem;
+      max-width: 1200px;
+    }
+    /* Extra large: 80px padding with larger max-width */
+    @media (min-width: 1280px) {
+      padding-left: 5rem;
+      padding-right: 5rem;
+      max-width: 1400px;
+    }
+    /* Ultra wide: 100px padding */
+    @media (min-width: 1536px) {
+      padding-left: 6.25rem;
+      padding-right: 6.25rem;
+      max-width: 1600px;
+    }
   }
 
   /* Add animation for the retro grid */

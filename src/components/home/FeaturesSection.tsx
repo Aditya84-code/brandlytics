@@ -58,10 +58,10 @@ const item = {
 
 const FeaturesSection = () => {
   return (
-    <section id="features" className="container space-y-12 py-20 md:py-32">
-      <div className="text-center">
+    <section id="features" className="container space-y-12 py-20 md:py-32 lg:py-40">
+      <div className="text-center space-y-4 lg:space-y-6">
         <motion.h2 
-          className="mb-4 text-3xl font-bold tracking-tight md:text-4xl"
+          className="mb-4 text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl"
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -70,7 +70,7 @@ const FeaturesSection = () => {
           Powerful Features for Your <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Personal Brand Success </span>
         </motion.h2>
         <motion.p 
-          className="mx-auto max-w-[800px] text-muted-foreground md:text-lg"
+          className="mx-auto max-w-[800px] text-muted-foreground md:text-lg lg:text-xl leading-relaxed"
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -80,7 +80,7 @@ const FeaturesSection = () => {
         </motion.p>
       </div>
       <motion.div 
-        className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+        className="grid grid-cols-1 gap-6 lg:gap-8 md:grid-cols-2 lg:grid-cols-3"
         variants={container}
         initial="hidden"
         whileInView="show"
@@ -90,13 +90,13 @@ const FeaturesSection = () => {
           <motion.div
             key={feature.id}
             variants={item}
-            className="rounded-xl border bg-card p-6 transition-all hover:shadow-md"
+            className="rounded-xl border bg-card p-6 lg:p-8 transition-all hover:shadow-md"
           >
-            <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <feature.icon className="h-6 w-6" />
+            <div className="mb-4 lg:mb-6 inline-flex h-12 w-12 lg:h-14 lg:w-14 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <feature.icon className="h-6 w-6 lg:h-7 lg:w-7" />
             </div>
-            <h3 className="mb-2 text-xl font-semibold">{feature.title}</h3>
-            <p className="text-muted-foreground">{feature.description}</p>
+            <h3 className="mb-2 lg:mb-3 text-xl lg:text-2xl font-semibold">{feature.title}</h3>
+            <p className="text-muted-foreground leading-relaxed lg:text-lg">{feature.description}</p>
           </motion.div>
         ))}
       </motion.div>

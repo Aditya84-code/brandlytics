@@ -183,100 +183,102 @@ const Dashboard = () => {
 
   return (
     <motion.div
-      className="container px-4 py-8 md:py-12"
+      className="dashboard-container py-8 md:py-12 lg:py-16"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <header className="mb-8">
+      <header className="mb-8 lg:mb-12">
         <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
-          <div>
-            <h1 className="text-3xl font-bold md:text-4xl">Brand Analysis Dashboard</h1>
-            <p className="text-muted-foreground">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold md:text-4xl lg:text-5xl">Brand Analysis Dashboard</h1>
+            <p className="text-muted-foreground text-lg">
               Results for {userData.formData.personalInfo.name}, {userData.formData.personalInfo.profession}
             </p>
           </div>
-          <div className="flex gap-2">
-            <Button variant="outline" className="gap-1">
+          <div className="flex gap-3">
+            <Button variant="outline" className="gap-2">
               <Download className="h-4 w-4" /> Export Report
             </Button>
-            <Button className="gap-1">
+            <Button className="gap-2">
               <ArrowUpRight className="h-4 w-4" /> Upgrade to Pro
             </Button>
           </div>
         </div>
       </header>
 
-      <div className="mb-8 rounded-xl bg-card p-6 shadow-sm">
-        <div className="grid gap-6 lg:grid-cols-3">
-          <div className="col-span-1">
-            <h2 className="mb-2 text-2xl font-bold">Overall Brand Score</h2>
-            <div className="flex items-center gap-3">
-              <div className="text-5xl font-bold text-primary">{brandReport.score.overall}</div>
-              <div className="rounded-lg bg-primary/10 px-2 py-1 text-sm text-primary">
+      <div className="mb-8 lg:mb-12 rounded-xl bg-card p-6 lg:p-8 shadow-sm border">
+        <div className="grid gap-6 lg:gap-8 lg:grid-cols-3">
+          <div className="col-span-1 space-y-4">
+            <h2 className="text-2xl lg:text-3xl font-bold">Overall Brand Score</h2>
+            <div className="flex items-center gap-4">
+              <div className="text-5xl lg:text-6xl font-bold text-primary">{brandReport.score.overall}</div>
+              <div className="rounded-lg bg-primary/10 px-3 py-2 text-sm lg:text-base text-primary font-medium">
                 {brandReport.score.overall >= 80 ? 'Excellent' : 
                  brandReport.score.overall >= 60 ? 'Good' : 
                  brandReport.score.overall >= 40 ? 'Fair' : 'Needs Improvement'}
               </div>
             </div>
-            <p className="mt-2 text-sm text-muted-foreground">
+            <p className="text-sm lg:text-base text-muted-foreground leading-relaxed">
               {userData.webhookResponse.summary ? 
                 userData.webhookResponse.summary.substring(0, 150) + '...' :
                 'Your brand analysis has been completed successfully.'
               }
             </p>
           </div>
-          <div className="col-span-2 h-60">
+          <div className="col-span-2 h-60 lg:h-80">
             <BrandScoreRadarChart scores={brandReport.score} />
           </div>
         </div>
       </div>
 
       <Tabs defaultValue="overview" onValueChange={setSelectedTab} className="w-full">
-        <TabsList className="mb-8 grid w-full grid-cols-5 h-auto p-1">
-          <TabsTrigger value="overview" className="text-sm py-3">
+        <TabsList className="mb-8 lg:mb-12 grid w-full grid-cols-5 h-auto p-1">
+          <TabsTrigger value="overview" className="text-sm py-3 px-2">
             Overview
           </TabsTrigger>
-          <TabsTrigger value="recommendations" className="text-sm py-3">
+          <TabsTrigger value="recommendations" className="text-sm py-3 px-2">
             Recommendations
           </TabsTrigger>
-          <TabsTrigger value="summary" className="text-sm py-3">
+          <TabsTrigger value="summary" className="text-sm py-3 px-2">
             Summary
           </TabsTrigger>
-          <TabsTrigger value="ai-coach" className="relative text-sm py-3">
-            <div className="flex items-center gap-2 flex-wrap justify-center">
+          <TabsTrigger value="ai-coach" className="relative text-sm py-3 px-2">
+            <div className="flex items-center gap-1 lg:gap-2 flex-wrap justify-center">
               <div className="relative">
-                <Sparkles className="h-4 w-4" />
-                <div className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 animate-pulse"></div>
+                <Sparkles className="h-3 w-3 lg:h-4 lg:w-4" />
+                <div className="absolute -top-1 -right-1 h-1.5 w-1.5 lg:h-2 lg:w-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 animate-pulse"></div>
               </div>
-              <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-semibold whitespace-nowrap">
+              <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-semibold whitespace-nowrap text-xs lg:text-sm">
                 AI Coach
               </span>
-              <Badge className="bg-gradient-to-r from-purple-500 to-blue-500 text-white border-0 text-xs px-1.5 py-0.5">
-                <Crown className="h-2.5 w-2.5 mr-1" />
-                PREMIUM
+              <Badge className="bg-gradient-to-r from-purple-500 to-blue-500 text-white border-0 text-xs px-1 py-0.5 lg:px-1.5 lg:py-0.5">
+                <Crown className="h-2 w-2 lg:h-2.5 lg:w-2.5 mr-0.5 lg:mr-1" />
+                <span className="hidden sm:inline">PREMIUM</span>
+                <span className="sm:hidden">PRO</span>
               </Badge>
             </div>
           </TabsTrigger>
-          <TabsTrigger value="chat-coach" className="relative text-sm py-3">
-            <div className="flex items-center gap-2 flex-wrap justify-center">
+          <TabsTrigger value="chat-coach" className="relative text-sm py-3 px-2">
+            <div className="flex items-center gap-1 lg:gap-2 flex-wrap justify-center">
               <div className="relative">
-                <Bot className="h-4 w-4" />
-                <div className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 animate-pulse"></div>
+                <Bot className="h-3 w-3 lg:h-4 lg:w-4" />
+                <div className="absolute -top-1 -right-1 h-1.5 w-1.5 lg:h-2 lg:w-2 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 animate-pulse"></div>
               </div>
-              <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent font-semibold whitespace-nowrap">
+              <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent font-semibold whitespace-nowrap text-xs lg:text-sm">
                 Chat Coach
               </span>
-              <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 text-xs px-1.5 py-0.5">
-                <MessageCircle className="h-2.5 w-2.5 mr-1" />
-                LIVE
+              <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 text-xs px-1 py-0.5 lg:px-1.5 lg:py-0.5">
+                <MessageCircle className="h-2 w-2 lg:h-2.5 lg:w-2.5 mr-0.5 lg:mr-1" />
+                <span className="hidden sm:inline">LIVE</span>
+                <span className="sm:hidden">ON</span>
               </Badge>
             </div>
           </TabsTrigger>
         </TabsList>
         
-        <TabsContent value="overview">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <TabsContent value="overview" className="space-y-6 lg:space-y-8">
+          <div className="grid grid-cols-1 gap-6 lg:gap-8 md:grid-cols-2">
             <QuadrantCard
               title="Brand Consistency"
               score={brandReport.score.consistency}
@@ -311,74 +313,74 @@ const Dashboard = () => {
           </div>
         </TabsContent>
         
-        <TabsContent value="recommendations">
+        <TabsContent value="recommendations" className="space-y-6 lg:space-y-8">
           <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <AlertTriangle className="h-5 w-5 text-amber-500" />
+            <CardHeader className="pb-6">
+              <CardTitle className="flex items-center gap-2 text-xl lg:text-2xl">
+                <AlertTriangle className="h-5 w-5 lg:h-6 lg:w-6 text-amber-500" />
                 Brand Improvement Recommendations
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-base lg:text-lg">
                 Actionable insights to enhance your personal brand based on our analysis
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-0">
               <RecommendationList recommendations={brandReport.recommendations} />
             </CardContent>
           </Card>
         </TabsContent>
         
-        <TabsContent value="summary">
+        <TabsContent value="summary" className="space-y-6 lg:space-y-8">
           <Card>
-            <CardHeader>
-              <CardTitle>Brand Analysis Summary</CardTitle>
-              <CardDescription>
+            <CardHeader className="pb-6">
+              <CardTitle className="text-xl lg:text-2xl">Brand Analysis Summary</CardTitle>
+              <CardDescription className="text-base lg:text-lg">
                 Comprehensive overview of your personal brand status
               </CardDescription>
             </CardHeader>
-            <CardContent className="prose prose-neutral dark:prose-invert max-w-none">
-              <div className="space-y-4" dangerouslySetInnerHTML={{ __html: userData.webhookResponse.summary || 'No summary available.' }} />
+            <CardContent className="prose prose-neutral dark:prose-invert max-w-none prose-lg">
+              <div className="space-y-4 leading-relaxed" dangerouslySetInnerHTML={{ __html: userData.webhookResponse.summary || 'No summary available.' }} />
             </CardContent>
           </Card>
         </TabsContent>
         
-        <TabsContent value="ai-coach">
+        <TabsContent value="ai-coach" className="space-y-6 lg:space-y-8">
           <AICoachConsultation 
             userSummary={userData.webhookResponse.summary || 'Brand analysis completed successfully.'}
             userName={userData.formData.personalInfo.name}
           />
         </TabsContent>
 
-        <TabsContent value="chat-coach">
+        <TabsContent value="chat-coach" className="space-y-6 lg:space-y-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="space-y-6"
+            className="space-y-6 lg:space-y-8"
           >
             {/* Enhanced Chat Coach Header */}
-            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-500 via-emerald-500 to-teal-600 p-8 text-white">
+            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-500 via-emerald-500 to-teal-600 p-6 lg:p-8 text-white">
               <div className="relative z-10">
-                <div className="mb-4 flex items-center gap-3">
+                <div className="mb-4 lg:mb-6 flex items-center gap-3">
                   <div className="relative">
                     <div className="rounded-full bg-white/20 p-3">
-                      <Bot className="h-8 w-8" />
+                      <Bot className="h-6 w-6 lg:h-8 lg:w-8" />
                     </div>
-                    <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 animate-pulse"></div>
+                    <div className="absolute -top-1 -right-1 h-3 w-3 lg:h-4 lg:w-4 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 animate-pulse"></div>
                   </div>
                   <div>
                     <Badge className="mb-2 bg-white/20 text-white border-white/30 backdrop-blur-sm">
                       <MessageCircle className="h-3 w-3 mr-1" />
                       LIVE CHAT
                     </Badge>
-                    <h2 className="text-3xl font-bold">Chat with Your AI Brand Coach</h2>
+                    <h2 className="text-2xl lg:text-3xl font-bold">Chat with Your AI Brand Coach</h2>
                   </div>
                 </div>
-                <p className="mb-6 text-lg text-white/90 max-w-2xl">
+                <p className="mb-4 lg:mb-6 text-base lg:text-lg text-white/90 max-w-2xl leading-relaxed">
                   Get instant answers to your brand questions. Our AI coach is available 24/7 to help you 
                   improve your personal brand with personalized advice and strategies.
                 </p>
-                <div className="flex flex-wrap gap-4 mb-6">
+                <div className="flex flex-wrap gap-4 mb-4 lg:mb-6">
                   <div className="flex items-center gap-2 text-white/80">
                     <Zap className="h-4 w-4" />
                     <span className="text-sm">Instant Responses</span>
@@ -399,14 +401,14 @@ const Dashboard = () => {
 
             {/* Chat Widget Container */}
             <Card className="overflow-hidden">
-              <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 border-b">
+              <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 border-b p-4 lg:p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle className="flex items-center gap-2">
+                    <CardTitle className="flex items-center gap-2 text-lg lg:text-xl">
                       <Bot className="h-5 w-5 text-green-600" />
                       AI Brand Coach Chat
                     </CardTitle>
-                    <CardDescription>
+                    <CardDescription className="text-sm lg:text-base">
                       Ask questions about your brand analysis, get improvement tips, or discuss strategies
                     </CardDescription>
                   </div>
@@ -417,13 +419,14 @@ const Dashboard = () => {
                     className="gap-2"
                   >
                     <RefreshCw className="h-4 w-4" />
-                    Reload Chat
+                    <span className="hidden sm:inline">Reload Chat</span>
+                    <span className="sm:hidden">Reload</span>
                   </Button>
                 </div>
               </CardHeader>
               <CardContent className="p-0">
                 {/* Chatbot Widget Container */}
-                <div className="min-h-[600px] w-full bg-white relative">
+                <div className="min-h-[500px] lg:min-h-[600px] w-full bg-white relative">
                   {!chatbotLoaded && selectedTab === 'chat-coach' && (
                     <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
                       <div className="text-center">
@@ -432,7 +435,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                   )}
-                  <div id="dappier-ask-ai-widget" className="h-full min-h-[600px]">
+                  <div id="dappier-ask-ai-widget" className="h-full min-h-[500px] lg:min-h-[600px]">
                     <dappier-ask-ai-widget widgetId="wd_01jxsk0frbe8tspzv5jk4nwhjg" />
                   </div>
                 </div>
@@ -441,16 +444,16 @@ const Dashboard = () => {
 
             {/* Troubleshooting Section */}
             <Card className="border-amber-200 bg-amber-50">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-amber-800">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-2 text-amber-800 text-lg">
                   <MessageCircle className="h-5 w-5" />
                   Chat Not Working?
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3 text-amber-700">
-                  <p className="text-sm">If the chat isn't responding, try these steps:</p>
-                  <ul className="space-y-2 text-sm">
+                  <p className="text-sm lg:text-base">If the chat isn't responding, try these steps:</p>
+                  <ul className="space-y-2 text-sm lg:text-base">
                     <li className="flex items-start gap-2">
                       <span className="font-medium">1.</span>
                       <span>Click the "Reload Chat" button above</span>
@@ -485,17 +488,17 @@ const Dashboard = () => {
 
             {/* Quick Tips */}
             <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-2 text-lg lg:text-xl">
                   <MessageCircle className="h-5 w-5" />
                   Quick Tips for Better Conversations
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className="grid gap-4 lg:gap-6 md:grid-cols-2">
                   <div className="space-y-3">
                     <h4 className="font-medium text-green-700">Ask Specific Questions</h4>
-                    <ul className="space-y-1 text-sm text-muted-foreground">
+                    <ul className="space-y-1 text-sm lg:text-base text-muted-foreground">
                       <li>• "How can I improve my LinkedIn engagement?"</li>
                       <li>• "What content should I post for my industry?"</li>
                       <li>• "How do I build thought leadership?"</li>
@@ -503,7 +506,7 @@ const Dashboard = () => {
                   </div>
                   <div className="space-y-3">
                     <h4 className="font-medium text-green-700">Reference Your Analysis</h4>
-                    <ul className="space-y-1 text-sm text-muted-foreground">
+                    <ul className="space-y-1 text-sm lg:text-base text-muted-foreground">
                       <li>• "Based on my brand score, what should I focus on?"</li>
                       <li>• "Help me implement the recommendations"</li>
                       <li>• "Explain my competitive positioning"</li>

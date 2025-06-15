@@ -47,11 +47,11 @@ const item = {
 
 const TestimonialsSection = () => {
   return (
-    <section id="testimonials" className="gradient-background py-20 md:py-32">
-      <div className="container px-4 md:px-6">
-        <div className="mb-12 text-center">
+    <section id="testimonials" className="gradient-background py-20 md:py-32 lg:py-40">
+      <div className="container">
+        <div className="mb-12 lg:mb-16 text-center space-y-4 lg:space-y-6">
           <motion.h2 
-            className="mb-4 text-3xl font-bold tracking-tight md:text-4xl"
+            className="mb-4 text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl"
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -60,7 +60,7 @@ const TestimonialsSection = () => {
             Success Stories from Our Users
           </motion.h2>
           <motion.p 
-            className="mx-auto max-w-[800px] text-muted-foreground md:text-lg"
+            className="mx-auto max-w-[800px] text-muted-foreground md:text-lg lg:text-xl leading-relaxed"
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -71,7 +71,7 @@ const TestimonialsSection = () => {
         </div>
 
         <motion.div 
-          className="grid grid-cols-1 gap-6 md:grid-cols-3"
+          className="grid grid-cols-1 gap-6 lg:gap-8 md:grid-cols-3"
           variants={container}
           initial="hidden"
           whileInView="show"
@@ -81,22 +81,22 @@ const TestimonialsSection = () => {
             <motion.div 
               key={testimonial.id}
               variants={item}
-              className="relative rounded-2xl bg-background p-6 shadow-lg"
+              className="relative rounded-2xl bg-background p-6 lg:p-8 shadow-lg"
             >
-              <div className="mb-4 text-primary">
-                <Quote className="h-8 w-8" />
+              <div className="mb-4 lg:mb-6 text-primary">
+                <Quote className="h-8 w-8 lg:h-10 lg:w-10" />
               </div>
-              <blockquote className="mb-4">
-                <p className="italic text-foreground">{testimonial.quote}</p>
+              <blockquote className="mb-4 lg:mb-6">
+                <p className="italic text-foreground leading-relaxed lg:text-lg">{testimonial.quote}</p>
               </blockquote>
               <div className="flex items-center gap-4">
-                <Avatar>
+                <Avatar className="h-12 w-12 lg:h-14 lg:w-14">
                   <AvatarImage src={testimonial.image} alt={testimonial.name} />
                   <AvatarFallback>{testimonial.name.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="font-semibold">{testimonial.name}</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="font-semibold lg:text-lg">{testimonial.name}</p>
+                  <p className="text-sm lg:text-base text-muted-foreground">
                     {testimonial.role}, {testimonial.company}
                   </p>
                 </div>
