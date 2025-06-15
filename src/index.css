@@ -120,22 +120,58 @@
       padding-left: 2rem;
       padding-right: 2rem;
     }
-    /* Large desktop: 48px padding with max-width */
+    /* Laptop: 64px padding with max-width for better breathing room */
     @media (min-width: 1024px) {
-      padding-left: 3rem;
-      padding-right: 3rem;
-      max-width: 1200px;
-    }
-    /* Extra large: 64px padding with larger max-width */
-    @media (min-width: 1280px) {
       padding-left: 4rem;
       padding-right: 4rem;
-      max-width: 1400px;
+      max-width: 1200px;
     }
-    /* Ultra wide: 80px padding */
-    @media (min-width: 1536px) {
+    /* Large desktop: 80px padding with larger max-width */
+    @media (min-width: 1280px) {
       padding-left: 5rem;
       padding-right: 5rem;
+      max-width: 1400px;
+    }
+    /* Ultra wide: 100px padding */
+    @media (min-width: 1536px) {
+      padding-left: 6.25rem;
+      padding-right: 6.25rem;
+      max-width: 1600px;
+    }
+  }
+
+  /* Special container for landing page sections with extra breathing room */
+  .landing-container {
+    @apply mx-auto w-full;
+    /* Mobile: 16px padding */
+    padding-left: 1rem;
+    padding-right: 1rem;
+    /* Tablet: 24px padding */
+    @media (min-width: 640px) {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+    /* Desktop: 40px padding */
+    @media (min-width: 768px) {
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
+    }
+    /* Laptop: 80px padding with max-width for generous breathing room */
+    @media (min-width: 1024px) {
+      padding-left: 5rem;
+      padding-right: 5rem;
+      max-width: 1200px;
+    }
+    /* Large desktop: 100px padding with larger max-width */
+    @media (min-width: 1280px) {
+      padding-left: 6.25rem;
+      padding-right: 6.25rem;
+      max-width: 1400px;
+    }
+    /* Ultra wide: 120px padding */
+    @media (min-width: 1536px) {
+      padding-left: 7.5rem;
+      padding-right: 7.5rem;
       max-width: 1600px;
     }
   }

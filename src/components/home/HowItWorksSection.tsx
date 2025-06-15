@@ -80,7 +80,7 @@ const HowItWorksSection = () => {
 
   return (
     <section ref={sectionRef} className="py-20 md:py-32 bg-white">
-      <div className="container px-4 md:px-6">
+      <div className="landing-container px-4 md:px-6">
         <div className="relative bg-gray-50 rounded-3xl p-8 md:p-16 overflow-hidden border border-gray-200">
           {/* Background Grid Pattern */}
           <div className="absolute inset-0 opacity-30">

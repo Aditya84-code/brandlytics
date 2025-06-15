@@ -87,7 +87,7 @@ const PainPointsSolutionsSection = () => {
 
   return (
     <section ref={sectionRef} className="py-20 md:py-32 bg-white">
-      <div className="container px-4 md:px-6">
+      <div className="landing-container px-4 md:px-6">
         {/* Problems Section - Dark Background */}
         <motion.div
           className="mb-20"

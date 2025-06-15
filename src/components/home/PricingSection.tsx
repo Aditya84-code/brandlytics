@@ -54,7 +54,7 @@ const pricingTiers: PricingTier[] = [
 
 const PricingSection = () => {
   return (
-    <section id="pricing" className="container space-y-12 lg:space-y-16 py-20 md:py-32 lg:py-40">
+    <section id="pricing" className="landing-container space-y-12 lg:space-y-16 py-20 md:py-32 lg:py-40">
       <div className="text-center space-y-4 lg:space-y-6">
         <motion.h2 
           className="mb-4 text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl"

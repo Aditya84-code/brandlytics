@@ -48,7 +48,7 @@ const item = {
 const TestimonialsSection = () => {
   return (
     <section id="testimonials" className="gradient-background py-20 md:py-32 lg:py-40">
-      <div className="container">
+      <div className="landing-container">
         <div className="mb-12 lg:mb-16 text-center space-y-4 lg:space-y-6">
           <motion.h2 
             className="mb-4 text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl"

@@ -58,7 +58,7 @@ const item = {
 
 const FeaturesSection = () => {
   return (
-    <section id="features" className="container space-y-12 py-20 md:py-32 lg:py-40">
+    <section id="features" className="landing-container space-y-12 py-20 md:py-32 lg:py-40">
       <div className="text-center space-y-4 lg:space-y-6">
         <motion.h2 
           className="mb-4 text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl"

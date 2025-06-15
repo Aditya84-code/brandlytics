@@ -71,7 +71,7 @@ const AIConsultationSection = () => {
 
   return (
     <section ref={sectionRef} className="py-20 md:py-32 bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
-      <div className="container px-4 md:px-6">
+      <div className="landing-container px-4 md:px-6">
         {/* Section Header */}
         <motion.div
           className="text-center mb-16"
