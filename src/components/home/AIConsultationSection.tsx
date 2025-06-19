@@ -342,7 +342,7 @@ const AIConsultationSection = () => {
               title: "Proven Results",
               description: "Average 150% improvement in brand metrics"
             }
-          ].map((feature, featureIndex) => (
+          ].map((feature) => (
             <motion.div
               key={feature.title}
               className="text-center p-6 rounded-xl bg-white shadow-sm border hover:shadow-md transition-shadow"
