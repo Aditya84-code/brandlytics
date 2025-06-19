@@ -1,28 +1,18 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
-  AlertTriangle, 
-  CheckCircle, 
   ArrowRight, 
-  Eye, 
-  Users, 
-  TrendingDown, 
-  MessageCircle, 
   Target,
-  Zap,
+  TrendingUp,
   BarChart,
   Search,
   Crown,
   EyeOff,
   UserX,
-  TrendingUp,
   Hash,
-  Shield,
-  Database,
-  Globe,
+  TrendingDown,
   Sparkles
 } from 'lucide-react';
 import { Link } from 'react-router-dom';

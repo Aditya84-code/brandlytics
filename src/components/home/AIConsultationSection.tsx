@@ -148,13 +148,13 @@ const AIConsultationSection = () => {
                     { icon: Zap, label: "Instant Analysis" },
                     { icon: Target, label: "Personalized Strategy" },
                     { icon: TrendingUp, label: "Growth Insights" }
-                  ].map((capability, index) => (
+                  ].map((capability, capabilityIndex) => (
                     <motion.div
                       key={capability.label}
                       className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1"
                       initial={{ opacity: 0, scale: 0 }}
                       animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                      transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
+                      transition={{ duration: 0.5, delay: 0.5 + capabilityIndex * 0.1 }}
                     >
                       <capability.icon className="h-3 w-3 text-blue-300" />
                       <span className="text-xs text-white">{capability.label}</span>
@@ -168,13 +168,13 @@ const AIConsultationSection = () => {
                 { icon: Users, value: "2.5M+", label: "Profiles Analyzed", position: "top-4 right-4" },
                 { icon: MessageCircle, value: "98%", label: "Accuracy Rate", position: "bottom-4 left-4" },
                 { icon: Clock, value: "<30s", label: "Response Time", position: "top-4 left-4" }
-              ].map((stat, _index) => (
+              ].map((stat, statIndex) => (
                 <motion.div
                   key={stat.label}
                   className={`absolute ${stat.position} bg-white/10 backdrop-blur-sm rounded-lg p-3`}
                   initial={{ opacity: 0, y: 20 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.6, delay: 0.8 + _index * 0.2 }}
+                  transition={{ duration: 0.6, delay: 0.8 + statIndex * 0.2 }}
                   whileHover={{ scale: 1.05 }}
                 >
                   <div className="flex items-center gap-2">
@@ -214,12 +214,12 @@ const AIConsultationSection = () => {
 
             {/* Scenario Tabs */}
             <div className="flex gap-2 mb-6">
-              {scenarios.map((scenario, index) => (
+              {scenarios.map((scenario, scenarioIndex) => (
                 <button
                   key={scenario.id}
-                  onClick={() => setActiveScenario(index)}
+                  onClick={() => setActiveScenario(scenarioIndex)}
                   className={`flex-1 p-3 rounded-lg text-sm font-medium transition-all ${
-                    activeScenario === index
+                    activeScenario === scenarioIndex
                       ? 'bg-primary text-primary-foreground shadow-md'
                       : 'bg-muted hover:bg-muted/80'
                   }`}
@@ -342,7 +342,7 @@ const AIConsultationSection = () => {
               title: "Proven Results",
               description: "Average 150% improvement in brand metrics"
             }
-          ].map((feature, index) => (
+          ].map((feature, featureIndex) => (
             <motion.div
               key={feature.title}
               className="text-center p-6 rounded-xl bg-white shadow-sm border hover:shadow-md transition-shadow"
