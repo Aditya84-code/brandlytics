@@ -168,13 +168,13 @@ const AIConsultationSection = () => {
                 { icon: Users, value: "2.5M+", label: "Profiles Analyzed", position: "top-4 right-4" },
                 { icon: MessageCircle, value: "98%", label: "Accuracy Rate", position: "bottom-4 left-4" },
                 { icon: Clock, value: "<30s", label: "Response Time", position: "top-4 left-4" }
-              ].map((stat, index) => ( // eslint-disable-line @typescript-eslint/no-unused-vars
+              ].map((stat, _index) => (
                 <motion.div
                   key={stat.label}
                   className={`absolute ${stat.position} bg-white/10 backdrop-blur-sm rounded-lg p-3`}
                   initial={{ opacity: 0, y: 20 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.6, delay: 0.8 + index * 0.2 }}
+                  transition={{ duration: 0.6, delay: 0.8 + _index * 0.2 }}
                   whileHover={{ scale: 1.05 }}
                 >
                   <div className="flex items-center gap-2">

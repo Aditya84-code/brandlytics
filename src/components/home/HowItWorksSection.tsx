@@ -2,20 +2,15 @@ import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { 
-  UserPlus, 
-  Search, 
-  BarChart3, 
-  Sparkles, 
   ArrowRight,
-  CheckCircle,
   Clock,
   Zap,
   Link as LinkIcon,
   Brain,
   Target,
-  MessageCircle
+  MessageCircle,
+  Sparkles
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
