@@ -12,6 +12,7 @@ interface AuthContextType {
   signOut: () => Promise<void>;
   updateProfile: (updates: Partial<Profile>) => Promise<void>;
   loading: boolean;
+  error: string | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -21,6 +22,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let mounted = true;
@@ -28,24 +30,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Get initial session
     const getInitialSession = async () => {
       try {
+        // Check if Supabase is properly configured
+        if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_ANON_KEY) {
+          console.warn('Supabase not configured, running in demo mode');
+          setLoading(false);
+          return;
+        }
+
         const { data: { session }, error } = await supabase.auth.getSession();
         
         if (error) {
           console.error('Error getting session:', error);
+          setError(error.message);
           return;
         }
 
         if (mounted) {
           setSession(session);
           setUser(session?.user ?? null);
-          setLoading(false); // Set loading to false immediately after setting session/user
+          setLoading(false);
           
           if (session?.user) {
-            fetchProfile(session.user.id); // Fetch profile asynchronously
+            fetchProfile(session.user.id);
           }
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error in getInitialSession:', error);
+        setError(error.message);
         if (mounted) {
           setLoading(false);
         }
@@ -63,10 +74,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (mounted) {
         setSession(session);
         setUser(session?.user ?? null);
-        setLoading(false); // Set loading to false immediately after auth state change
+        setLoading(false);
+        setError(null);
         
         if (session?.user) {
-          fetchProfile(session.user.id); // Fetch profile asynchronously
+          fetchProfile(session.user.id);
         } else {
           setProfile(null);
         }
@@ -91,7 +103,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (error) {
         if (error.code === 'PGRST116') {
-          // Profile doesn't exist, create one
           console.log('Profile not found, creating new profile');
           await createProfile(userId);
           return;
@@ -101,9 +112,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       console.log('Profile fetched:', data);
       setProfile(data);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching profile:', error);
-      // Don't throw error, just log it
+      setError(error.message);
     }
   };
 
@@ -130,73 +141,97 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (error) {
         console.error('Error creating profile:', error);
+        setError(error.message);
         return;
       }
 
       console.log('Profile created:', data);
       setProfile(data);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error in createProfile:', error);
+      setError(error.message);
     }
   };
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      setError(null);
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    if (error) {
+      if (error) {
+        throw error;
+      }
+    } catch (error: any) {
+      setError(error.message);
       throw error;
     }
   };
 
   const signUp = async (email: string, username: string, password: string) => {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          username,
-          full_name: username,
+    try {
+      setError(null);
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            username,
+            full_name: username,
+          },
         },
-      },
-    });
+      });
 
-    if (error) {
+      if (error) {
+        throw error;
+      }
+    } catch (error: any) {
+      setError(error.message);
       throw error;
     }
   };
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
+    try {
+      setError(null);
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        throw error;
+      }
+      
+      setUser(null);
+      setProfile(null);
+      setSession(null);
+    } catch (error: any) {
+      setError(error.message);
       throw error;
     }
-    
-    // Clear local state
-    setUser(null);
-    setProfile(null);
-    setSession(null);
   };
 
   const updateProfile = async (updates: Partial<Profile>) => {
     if (!user) throw new Error('No user logged in');
 
-    const { error } = await supabase
-      .from('profiles')
-      .update({
-        ...updates,
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', user.id);
+    try {
+      setError(null);
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          ...updates,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', user.id);
 
-    if (error) {
+      if (error) {
+        throw error;
+      }
+
+      await fetchProfile(user.id);
+    } catch (error: any) {
+      setError(error.message);
       throw error;
     }
-
-    // Refresh profile data
-    await fetchProfile(user.id);
   };
 
   return (
@@ -208,7 +243,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signUp, 
       signOut,
       updateProfile,
-      loading
+      loading,
+      error
     }}>
       {children}
     </AuthContext.Provider>
