@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { DivideIcon as LucideIcon } from 'lucide-react';
+import { DivideIcon } from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
@@ -13,7 +13,7 @@ interface QuadrantCardProps {
   title: string;
   score: number;
   description: string;
-  icon: LucideIcon;
+  icon: typeof DivideIcon;
   review?: string;
 }
 

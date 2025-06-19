@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Feature } from '@/types';
-import { LineChart, Users, PieChart, TrendingUp, Zap, Shield, Globe, BarChart2 } from 'lucide-react';
+import { Users, TrendingUp, Zap, Shield, Globe, BarChart2 } from 'lucide-react';
 
 const features: Feature[] = [
   {
