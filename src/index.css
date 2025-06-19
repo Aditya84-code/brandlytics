@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Jost:ital,wght@0,100..900;1,100..900&family=Oswald:wght@200..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Poppins:wght@500;600;700&display=swap');
 
 @tailwind base;
@@ -77,8 +78,8 @@
 }
   
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 700;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
     line-height: 1.2;
   }
   
@@ -176,6 +177,48 @@
     }
   }
 
+  /* Special container for hero section with maximum breathing room */
+  .hero-container {
+    @apply mx-auto w-full;
+    /* Mobile: 16px padding */
+    padding-left: 1rem;
+    padding-right: 1rem;
+    /* Tablet: 24px padding */
+    @media (min-width: 640px) {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+    /* Desktop: 40px padding */
+    @media (min-width: 768px) {
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
+    }
+    /* Laptop: 100px padding for generous breathing room */
+    @media (min-width: 1024px) {
+      padding-left: 6.25rem;
+      padding-right: 6.25rem;
+      max-width: 1200px;
+    }
+    /* Large desktop: 140px padding with larger max-width */
+    @media (min-width: 1280px) {
+      padding-left: 8.75rem;
+      padding-right: 8.75rem;
+      max-width: 1400px;
+    }
+    /* Ultra wide: 180px padding for maximum breathing room */
+    @media (min-width: 1536px) {
+      padding-left: 11.25rem;
+      padding-right: 11.25rem;
+      max-width: 1600px;
+    }
+    /* Extra large screens: 220px padding */
+    @media (min-width: 1920px) {
+      padding-left: 13.75rem;
+      padding-right: 13.75rem;
+      max-width: 1800px;
+    }
+  }
+
   /* Special container for dashboard with extra breathing room */
   .dashboard-container {
     @apply mx-auto w-full;
@@ -229,5 +272,18 @@
   /* Add font-geist fallback */
   .font-geist {
     font-family: 'Inter', sans-serif;
+  }
+
+  /* Custom font classes */
+  .font-oswald {
+    font-family: 'Oswald', sans-serif;
+  }
+
+  .font-jost {
+    font-family: 'Jost', sans-serif;
+  }
+
+  .font-dancing {
+    font-family: 'Dancing Script', cursive;
   }
 }

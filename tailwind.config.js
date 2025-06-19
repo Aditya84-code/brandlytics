@@ -9,6 +9,13 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'oswald': ['Oswald', 'sans-serif'],
+        'jost': ['Jost', 'sans-serif'],
+        'dancing': ['Dancing Script', 'cursive'],
+        'inter': ['Inter', 'sans-serif'],
+        'poppins': ['Poppins', 'sans-serif'],
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
