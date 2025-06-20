@@ -1,22 +1,54 @@
 import { createClient } from '@supabase/supabase-js'
 
-// Provide fallback values for development
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co'
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-key'
+// Get environment variables with better error handling
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
-// Log environment variables status (without exposing actual values)
-console.log('Supabase config:', {
-  hasUrl: !!import.meta.env.VITE_SUPABASE_URL,
-  hasKey: !!import.meta.env.VITE_SUPABASE_ANON_KEY,
-  urlLength: supabaseUrl.length,
-  keyLength: supabaseAnonKey.length
-});
-
-if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_ANON_KEY) {
-  console.warn('Missing Supabase environment variables. Some features may not work properly.')
+// Validate environment variables
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.error('Missing Supabase environment variables:', {
+    hasUrl: !!supabaseUrl,
+    hasKey: !!supabaseAnonKey,
+    url: supabaseUrl ? `${supabaseUrl.substring(0, 20)}...` : 'undefined',
+    key: supabaseAnonKey ? `${supabaseAnonKey.substring(0, 20)}...` : 'undefined'
+  });
+  
+  // In production, show user-friendly error
+  if (import.meta.env.PROD) {
+    throw new Error('Application configuration error. Please contact support.');
+  }
+  
+  // In development, show detailed error
+  throw new Error(`
+    Missing Supabase configuration. Please ensure these environment variables are set:
+    - VITE_SUPABASE_URL: ${supabaseUrl ? '✓ Set' : '✗ Missing'}
+    - VITE_SUPABASE_ANON_KEY: ${supabaseAnonKey ? '✓ Set' : '✗ Missing'}
+    
+    For local development:
+    1. Copy .env.example to .env
+    2. Fill in your Supabase project details
+    
+    For Netlify deployment:
+    1. Go to Site settings → Environment variables
+    2. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY
+    3. Redeploy your site
+  `);
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// Log configuration status (without exposing sensitive data)
+console.log('Supabase configuration:', {
+  url: `${supabaseUrl.substring(0, 30)}...`,
+  keyLength: supabaseAnonKey.length,
+  environment: import.meta.env.MODE
+});
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true
+  }
+})
 
 // Database types
 export interface Profile {

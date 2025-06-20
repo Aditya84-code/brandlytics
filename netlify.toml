@@ -1,7 +1,7 @@
 # Netlify configuration file
 [build]
-  # Build command
-  command = "npm run build"
+  # Build command - ensure npm install runs first
+  command = "npm ci && npm run build"
   
   # Directory to publish (Vite builds to 'dist' by default)
   publish = "dist"
@@ -9,6 +9,8 @@
 # Node.js version
 [build.environment]
   NODE_VERSION = "18"
+  # Ensure npm ci is used for faster, reliable installs
+  NPM_FLAGS = "--production=false"
 
 # SPA redirect rules
 [[redirects]]
@@ -45,7 +47,7 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
-# Environment variables for build
+# Environment variables for build (these should be set in Netlify dashboard)
 [context.production.environment]
   NODE_ENV = "production"
 
@@ -54,3 +56,21 @@
 
 [context.branch-deploy.environment]
   NODE_ENV = "production"
+
+# Build processing settings
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = true
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
+[build.processing.images]
+  compress = true

@@ -16,6 +16,7 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: false,
     minify: 'terser',
+    target: 'esnext',
     rollupOptions: {
       output: {
         manualChunks: {
@@ -25,5 +26,17 @@ export default defineConfig({
         },
       },
     },
+    // Ensure terser options are properly configured
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
+  },
+  // Define environment variables for better error handling
+  define: {
+    __SUPABASE_URL__: JSON.stringify(process.env.VITE_SUPABASE_URL || ''),
+    __SUPABASE_ANON_KEY__: JSON.stringify(process.env.VITE_SUPABASE_ANON_KEY || ''),
   },
 });
