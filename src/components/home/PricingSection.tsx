@@ -271,11 +271,11 @@ const PricingSection = () => {
           <div className="flex flex-wrap justify-center gap-6 text-sm">
             <div className="flex items-center gap-2 text-gray-500">
               <Check className="h-4 w-4 text-green-500" />
-              <span>30-day money-back guarantee</span>
+              <span>Grow your personal brand</span>
             </div>
             <div className="flex items-center gap-2 text-gray-500">
               <Check className="h-4 w-4 text-green-500" />
-              <span>Cancel anytime</span>
+              <span>Pay Monthly</span>
             </div>
             <div className="flex items-center gap-2 text-gray-500">
               <Check className="h-4 w-4 text-green-500" />
