@@ -18,7 +18,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Link } from 'react-router-dom';
 import { createBrandAudit, createBrandResult, updateBrandAuditStatus } from '@/lib/database';
 
-const WEBHOOK_URL = 'https://motivatrix7.app.n8n.cloud/webhook/226738f5-daa8-45fe-8e79-c6f8b08d654e';
+const WEBHOOK_URL = 'https://ailife03.app.n8n.cloud/webhook/226738f5-daa8-45fe-8e79-c6f8b08d654e';
 
 const AuditForm = () => {
   const [step, setStep] = useState<number>(1);
