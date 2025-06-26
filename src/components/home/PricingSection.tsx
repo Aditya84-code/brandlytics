@@ -10,8 +10,8 @@ const pricingTiers: PricingTier[] = [
     price: '$0',
     description: 'Perfect for individuals exploring their personal brand potential.',
     features: [
-      'Basic brand audit (1 per month)',
-      'Single platform analysis',
+      'Basic brand audit (5 per month)',
+      'Both platform analysis',
       'Core brand score metrics',
       'Basic recommendations',
       'Email report delivery',
@@ -25,14 +25,14 @@ const pricingTiers: PricingTier[] = [
     description: 'For professionals serious about building their personal brand presence.',
     features: [
       'Everything in Starter',
-      'Unlimited brand audits',
+      '20 brand audits',
       'Multi-platform analysis (LinkedIn, Instagram)',
       'Advanced AI recommendations',
       'Competitor benchmarking',
       'Content optimization insights',
-      'Export to PDF/CSV',
       'Priority email support',
-      'Monthly trend reports',
+      'One to One AI consultation',
+      'AI chat support',
     ],
     buttonText: 'Go Professional',
     recommended: true,
@@ -49,8 +49,7 @@ const pricingTiers: PricingTier[] = [
       'Advanced analytics dashboard',
       'Custom brand metrics',
       'White-label reports',
-      'API access for integrations',
-      'Dedicated account manager',
+      'AI Powered chatbot',
       'Custom training sessions',
     ],
     buttonText: 'Get Enterprise',
@@ -150,7 +149,7 @@ const PricingSection = () => {
                       </div>
                       {tier.price !== '$0' && (
                         <div className="text-sm text-gray-500 mt-1">
-                          Billed monthly • Cancel anytime
+                          Billed monthly
                         </div>
                       )}
                     </div>
